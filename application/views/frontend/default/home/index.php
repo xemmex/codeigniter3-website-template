@@ -1,0 +1,1 @@
+<?php $this->template->widget( 'gallery', 'gallery_model', 'get_one', 1, 'image' ); ?>
