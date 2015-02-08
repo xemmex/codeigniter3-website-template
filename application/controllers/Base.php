@@ -2,22 +2,42 @@
 
 defined ( 'BASEPATH' ) OR exit ( 'No direct script access allowed' );
 
-require_once( dirname ( __FILE__ ) . "/frontend/Home.php" );
-
-class Base extends Home
+if ( file_exists ( APPPATH . '/config/install.php' ) )
 {
+    require_once( APPPATH . "/config/install.php" );
 
-    /**
-     * Base Controller, Extend Home Public Controller
-     *
-     * Maps to the following URL
-     * 		http://example.com/index.php/
-     * 	- or with mod_rewrite -
-     * 		http://example.com/
-     */
-    public function __construct ()
+    if ( isset ( $config['install_status'] ) && $config['install_status'] === TRUE )
     {
-	parent::__construct ();
-    }
+	require_once( dirname ( __FILE__ ) . "/frontend/Home.php" );
 
+	class Base extends Home
+	{
+
+	    public function __construct ()
+	    {
+		parent::__construct ();
+	    }
+
+	}
+
+    }
+    else
+    {
+	require_once( dirname ( __FILE__ ) . "/installation/Install.php" );
+
+	class Base extends Install
+	{
+
+	    public function __construct ()
+	    {
+		parent::__construct ();
+	    }
+
+	}
+
+    }
+}
+else
+{
+    exit ( 'Install file is missing.' );
 }

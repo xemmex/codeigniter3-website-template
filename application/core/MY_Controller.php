@@ -3,6 +3,29 @@
 defined ( 'BASEPATH' ) OR exit ( 'No direct script access allowed' );
 
 /**
+ * Install Controller
+ *
+ * Controller to manage Auth model,
+ *
+ * @package    CodeIgniter
+ * @subpackage Frontend_Controller
+ * @category   cores
+ * @version    1.0 <beta>
+ * @author     Nicolás Martinez <info@nicojmb.com>
+ * @link       http://nicojmb.com
+ */
+class Install_Controller extends CI_Controller
+{
+
+    public function __construct ()
+    {
+	// Parent Method
+	parent::__construct ();
+    }
+
+}
+
+/**
  * Frontend Controller
  *
  * Standar public controller to all users
