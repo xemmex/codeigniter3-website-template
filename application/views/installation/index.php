@@ -10,7 +10,6 @@
 	<title>Installation </title>
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
 	<style type="text/css">
 	    body {
 		padding-top: 30px;
@@ -76,21 +75,21 @@
 		<div class="form-group">
 		    <div class="input-group">
 			<span class="input-group-addon glyphicon glyphicon-hdd"></span>
-			<input type="text" required="" autocomplete="off" placeholder="Database Host" class="form-control" name="db_host" value="">
+			<input type="text" required="" autocomplete="off" placeholder="Database Host" class="form-control" name="db_host" id="db_host" value="">
 		    </div>
 		</div>
 
 		<div class="form-group">
 		    <div class="input-group">
 			<span class="input-group-addon glyphicon glyphicon-user"></span>
-			<input type="text" required="" autocomplete="off" placeholder="Database Username" class="form-control" name="db_username" value="">
+			<input type="text" required="" autocomplete="off" placeholder="Database Username" class="form-control" name="db_username" id="db_username" value="">
 		    </div>
 		</div>
 
 		<div class="form-group">
 		    <div class="input-group">
 			<span class="input-group-addon glyphicon glyphicon-lock"></span>
-			<input type="text" required="" autocomplete="off" placeholder="Database Password" class="form-control" name="db_password" value="">
+			<input type="text" required="" autocomplete="off" placeholder="Database Password" class="form-control" name="db_password" id="db_password" value="">
 		    </div>
 		</div>
 
@@ -98,11 +97,24 @@
 		    <div class="form-group">
 			<div class="input-group">
 			    <span class="input-group-addon glyphicon glyphicon-tasks"></span>
-			    <input type="text" required="" autocomplete="off" placeholder="Database Name" class="form-control" name="database" value=""><br>
+			    <input type="text" required="" autocomplete="off" placeholder="Database Name" class="form-control" name="db_database" id="db_database" value=""><br>
 			</div>
 
 		    </div>
 		</div>
+
+		<div class="form-group">
+		    <div class="form-group">
+			<div class="input-group">
+			    <span class="input-group-addon glyphicon glyphicon-tasks"></span>
+			    <input type="text" required="" autocomplete="off" placeholder="Table Prefix" class="form-control" name="db_prefix" id="db_prefix" value=""><br>
+			</div>
+
+		    </div>
+		</div>
+
+		<button class="btn btn-primary" id="db-test-connection">Test connection</button>
+		<div class="alert displayNone" id="db-test-connection-result"></div>
 
 	    </div>
 
@@ -113,21 +125,28 @@
 		<div class="form-group">
 		    <div class="input-group">
 			<span class="input-group-addon glyphicon glyphicon-eye-open"></span>
-			<input type="text" required="" autocomplete="off" placeholder="Codeigniter Encryption Key" class="form-control" name="db_password" value="">
+			<input type="text" required="" autocomplete="off" placeholder="Codeigniter Encryption Key" class="form-control" name="system_encryption_key" id="system_encryption_key" value="">
+			<span class="input-group-btn">
+			    <button class="btn btn-warning" id="generate-encryption-key">Generate random key</button>
+			</span>
+
+
 		    </div>
 		</div>
+
+		<hr><hr>
 
 		<div class="form-group">
 		    <div class="input-group">
 			<span class="input-group-addon glyphicon glyphicon-envelope"></span>
-			<input type="text" required="" autocomplete="off" placeholder="Administrator E-mail" class="form-control" name="db_password" value="">
+			<input type="text" required="" autocomplete="off" placeholder="Administrator E-mail" class="form-control" name="system_email" value="">
 		    </div>
 		</div>
 
 		<div class="form-group">
 		    <div class="input-group">
 			<span class="input-group-addon glyphicon glyphicon-lock"></span>
-			<input type="text" required="" autocomplete="off" placeholder="Administrator Password" class="form-control" name="db_password" value="">
+			<input type="text" required="" autocomplete="off" placeholder="Administrator Password" class="form-control" name="system_password" value="">
 		    </div>
 		</div>
 
@@ -142,10 +161,35 @@
 	    </div>
 
 	</div>
-
-
-
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+            $(function () {
+
+                $('#generate-encryption-key').on('click', function () {
+                    $.ajax({
+                        url: "/install/generate-encryption-key"
+                    }).done(function (key) {
+                        $("#system_encryption_key").val(key);
+                    });
+                });
+
+                $('#db-test-connection').on('click', function () {
+                    $.ajax({
+                        url: "/install/db-test-connection",
+                        data: {
+                            'db_host': $('#db_host').val(),
+                            'db_username': $('#db_username').val(),
+                            'db_password': $('#db_password').val(),
+                            'db_databse': $('#db_databse').val(),
+                            'db_prefix': $('#db_prefix').val(),
+                        }
+                    }).done(function (key) {
+                        $("#system_encryption_key").val(key);
+                    });
+                });
+
+            });
+	</script>
     </body>
 </html>

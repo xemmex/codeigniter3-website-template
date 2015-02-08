@@ -57,6 +57,9 @@ $route['translate_uri_dashes'] = TRUE;
 // Base Route
 $route['default_controller'] = 'base';
 
+// Install
+$route['install/(.+)$'] = 'installation/install/$1';
+
 // Backend
 $route['auth/(.+)$'] = 'backend/auth/$1';
 
