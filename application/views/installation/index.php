@@ -73,9 +73,21 @@
 		<h2><i class="glyphicon glyphicon-tasks"></i>  Database Settings</h2>
 
 		<div class="form-group">
+		    <div class="form-group">
+			<div class="input-group">
+			    <span class="input-group-addon glyphicon glyphicon-dashboard"></span>
+			    <select required="" autocomplete="off" placeholder="Database Driver" class="form-control" name="db_driver" id="db_driver">
+				<option value="mysqli">MySQLi</option>
+				<option value="mysql">MySQL (not recommended)</option>
+			    </select>
+			</div>
+		    </div>
+		</div>
+
+		<div class="form-group">
 		    <div class="input-group">
 			<span class="input-group-addon glyphicon glyphicon-hdd"></span>
-			<input type="text" required="" autocomplete="off" placeholder="Database Host" class="form-control" name="db_host" id="db_host" value="">
+			<input type="text" required="" autocomplete="off" placeholder="Database Host" class="form-control" name="db_host" id="db_host" value="localhost">
 		    </div>
 		</div>
 
@@ -107,34 +119,22 @@
 		    <div class="form-group">
 			<div class="input-group">
 			    <span class="input-group-addon glyphicon glyphicon-tasks"></span>
-			    <input type="text" required="" autocomplete="off" placeholder="Table Prefix" class="form-control" name="db_prefix" id="db_prefix" value=""><br>
+			    <input type="text" required="" autocomplete="off" placeholder="Table Prefix" class="form-control" name="db_prefix" id="db_prefix" value="_new"><br>
 			</div>
 
 		    </div>
 		</div>
 
+		<div class="alert alert-info hidden" id="db-test-connection-result"></div>
 		<button class="btn btn-primary" id="db-test-connection">Test connection</button>
-		<div class="alert displayNone" id="db-test-connection-result"></div>
+
 
 	    </div>
 
 	    <div class="col-sm-6">
 
-		<h2><i class="glyphicon glyphicon-lock"></i>  Security Settings</h2>
 
-		<div class="form-group">
-		    <div class="input-group">
-			<span class="input-group-addon glyphicon glyphicon-eye-open"></span>
-			<input type="text" required="" autocomplete="off" placeholder="Codeigniter Encryption Key" class="form-control" name="system_encryption_key" id="system_encryption_key" value="">
-			<span class="input-group-btn">
-			    <button class="btn btn-warning" id="generate-encryption-key">Generate random key</button>
-			</span>
-
-
-		    </div>
-		</div>
-
-		<hr><hr>
+		<h2><i class="glyphicon glyphicon-user"></i> Login Information</h2>
 
 		<div class="form-group">
 		    <div class="input-group">
@@ -147,6 +147,22 @@
 		    <div class="input-group">
 			<span class="input-group-addon glyphicon glyphicon-lock"></span>
 			<input type="text" required="" autocomplete="off" placeholder="Administrator Password" class="form-control" name="system_password" value="">
+		    </div>
+		</div>
+
+		<hr><hr>
+
+		<h2><i class="glyphicon glyphicon-lock"></i>  Security Settings</h2>
+
+		<div class="form-group">
+		    <div class="input-group">
+			<span class="input-group-addon glyphicon glyphicon-eye-open"></span>
+			<input type="text" required="" autocomplete="off" placeholder="Codeigniter Encryption Key" class="form-control" name="system_encryption_key" id="system_encryption_key" value="">
+			<span class="input-group-btn">
+			    <button class="btn btn-warning" id="generate-encryption-key">Generate random key</button>
+			</span>
+
+
 		    </div>
 		</div>
 
@@ -165,27 +181,34 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
             $(function () {
-
-                $('#generate-encryption-key').on('click', function () {
+                $("#generate-encryption-key").on("click", function () {
+                    var input = $("#system_encryption_key");
                     $.ajax({
                         url: "/install/generate-encryption-key"
                     }).done(function (key) {
-                        $("#system_encryption_key").val(key);
+                        input.val(key);
                     });
                 });
 
-                $('#db-test-connection').on('click', function () {
+                $("#db-test-connection").on("click", function () {
+                    var result = $("#db-test-connection-result");
+                    var button = $(this);
+                    result.html("Loading...");
+                    button.attr("disabled", true);
                     $.ajax({
                         url: "/install/db-test-connection",
+                        method: "post",
                         data: {
-                            'db_host': $('#db_host').val(),
-                            'db_username': $('#db_username').val(),
-                            'db_password': $('#db_password').val(),
-                            'db_databse': $('#db_databse').val(),
-                            'db_prefix': $('#db_prefix').val(),
+                            "db_host": $("#db_host").val(),
+                            "db_username": $("#db_username").val(),
+                            "db_password": $("#db_password").val(),
+                            "db_database": $("#db_database").val(),
+                            "db_driver": $("#db_driver").val(),
+                            "db_prefix": $("#db_prefix").val()
                         }
-                    }).done(function (key) {
-                        $("#system_encryption_key").val(key);
+                    }).done(function (status) {
+                        result.removeClass("hidden").html(status).fadeIn();
+                        button.attr("disabled", false);
                     });
                 });
 

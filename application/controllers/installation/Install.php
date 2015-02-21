@@ -90,21 +90,35 @@ class Install extends Install_Controller
 	die ( $token );
     }
 
-    public function db_test_connection ( $len = 32 )
+    public function db_test_connection ()
     {
-
 	$config['hostname'] = $this->input->post ( 'db_host' );
 	$config['username'] = $this->input->post ( 'db_username' );
 	$config['password'] = $this->input->post ( 'db_password' );
 	$config['database'] = $this->input->post ( 'db_database' );
 	$config['dbdriver'] = $this->input->post ( 'db_driver' );
 	$config['dbprefix'] = $this->input->post ( 'db_dbprefix' );
+	$config['autoinit'] = FALSE;
+	$config['db_debug'] = FALSE;
 
 	try
 	{
-	    $this->load->database ( $config );
+	    if ( empty ( $config['hostname'] ) || empty ( $config['username'] ) || empty ( $config['password'] ) || empty ( $config['database'] ) || empty ( $config['dbdriver'] ) )
+	    {
+		throw new Exception ( 'All fields are required.' );
+	    }
 
-	    die ( 'Connection Succesfullly' );
+	    $database = $this->load->database ( $config, TRUE );
+
+	    $connected = $database->initialize ();
+
+	    if ( !$connected )
+	    {
+		throw new Exception ( 'Can not connect to databse.' );
+	    }
+
+
+	    echo 'Connection Succesfullly';
 	}
 	catch ( Exception $e )
 	{

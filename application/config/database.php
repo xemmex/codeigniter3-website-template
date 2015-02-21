@@ -40,7 +40,6 @@ defined ( 'BASEPATH' ) OR exit ( 'No direct script access allowed' );
   | 				 multi-byte character set and are running versions lower than these.
   | 				 Sites using Latin-1 or UTF-8 database character set and collation are unaffected.
   |	['swap_pre'] A default table prefix that should be swapped with the dbprefix
-  |	['autoinit'] Whether or not to automatically initialize the database.
   |	['encrypt']  Whether or not to use an encrypted connection.
   |	['compress'] Whether or not to use client compression (MySQL only)
   |	['stricton'] TRUE/FALSE - forces 'Strict Mode' connections
@@ -71,18 +70,17 @@ $db['default'] = array(
     'password' => '',
     'database' => '',
     'dbdriver' => 'mysqli',
-    'dbprefix' => 'new_',
+    'dbprefix' => '',
     'pconnect' => FALSE,
-    'db_debug' => FALSE,
+    'db_debug' => TRUE,
     'cache_on' => FALSE,
-    'cachedir' => 'application/cache',
+    'cachedir' => '',
     'char_set' => 'utf8',
     'dbcollat' => 'utf8_general_ci',
     'swap_pre' => '',
-    'autoinit' => TRUE,
     'encrypt' => FALSE,
     'compress' => FALSE,
     'stricton' => FALSE,
     'failover' => array(),
-    'save_queries' => FALSE
+    'save_queries' => TRUE
 );
