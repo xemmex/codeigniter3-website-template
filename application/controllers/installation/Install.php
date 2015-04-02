@@ -93,32 +93,33 @@ class Install extends Install_Controller
     public function db_test_connection ()
     {
 	$config['hostname'] = $this->input->post ( 'db_host' );
+	$config['hostname_port'] = $this->input->post ( 'db_host_port' );
 	$config['username'] = $this->input->post ( 'db_username' );
 	$config['password'] = $this->input->post ( 'db_password' );
 	$config['database'] = $this->input->post ( 'db_database' );
 	$config['dbdriver'] = $this->input->post ( 'db_driver' );
 	$config['dbprefix'] = $this->input->post ( 'db_dbprefix' );
-	$config['autoinit'] = FALSE;
-	$config['db_debug'] = FALSE;
 
 	try
 	{
-	    if ( empty ( $config['hostname'] ) || empty ( $config['username'] ) || empty ( $config['password'] ) || empty ( $config['database'] ) || empty ( $config['dbdriver'] ) )
+
+	    if ( empty ( $config['hostname'] ) || empty ( $config['hostname_port'] ) || empty ( $config['username'] ) || empty ( $config['password'] ) || empty ( $config['database'] ) || empty ( $config['dbdriver'] ) )
 	    {
 		throw new Exception ( 'All fields are required.' );
 	    }
 
-	    $database = $this->load->database ( $config, TRUE );
+	    $dsn = $config['dbdriver'] . '://' . $config['username'] . ':' . $config['password'] . '@' . $config['hostname'] . ':' . $config['hostname_port'] . '/' . $config['database'];
 
-	    $connected = $database->initialize ();
+	    $database = $this->load->database ( $dsn, TRUE );
 
-	    if ( !$connected )
+	    if ( empty ( $database ) || $database->conn_id === FALSE )
 	    {
-		throw new Exception ( 'Can not connect to databse.' );
+		$database->display_error ();
 	    }
-
-
-	    echo 'Connection Succesfullly';
+	    else
+	    {
+		echo 'Connection Succesfullly';
+	    }
 	}
 	catch ( Exception $e )
 	{

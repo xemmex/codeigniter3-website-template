@@ -93,6 +93,13 @@
 
 		<div class="form-group">
 		    <div class="input-group">
+			<span class="input-group-addon glyphicon glyphicon-hdd"></span>
+			<input type="text" required="" autocomplete="off" placeholder="Database Host Port" class="form-control" name="db_host_port" id="db_host_port" value="3306">
+		    </div>
+		</div>
+
+		<div class="form-group">
+		    <div class="input-group">
 			<span class="input-group-addon glyphicon glyphicon-user"></span>
 			<input type="text" required="" autocomplete="off" placeholder="Database Username" class="form-control" name="db_username" id="db_username" value="">
 		    </div>
@@ -200,6 +207,7 @@
                         method: "post",
                         data: {
                             "db_host": $("#db_host").val(),
+                            "db_host_port": $("#db_host_port").val(),
                             "db_username": $("#db_username").val(),
                             "db_password": $("#db_password").val(),
                             "db_database": $("#db_database").val(),
