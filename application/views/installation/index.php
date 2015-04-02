@@ -25,7 +25,13 @@
     <body role="document">
 
 	<div class="container theme-showcase" role="main">
-
+	    <div>
+		<a href="/install/info/" class="btn btn-info pull-right">
+		    <span class="glyphicon glyphicon-info-sign"></span> PHP Info
+		</a>
+		<div class="clearfix"></div>
+	    </div>
+	    <br>
 	    <div class="jumbotron">
 		<h1>Installation Setup v1.0</h1>
 	    </div>

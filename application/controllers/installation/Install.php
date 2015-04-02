@@ -5,6 +5,11 @@ defined ( 'BASEPATH' ) OR exit ( 'No direct script access allowed' );
 class Install extends Install_Controller
 {
 
+    public function info ()
+    {
+	$this->load->view ( 'installation/info' );
+    }
+
     public function index ()
     {
 	$data['requeriments'] = array(
